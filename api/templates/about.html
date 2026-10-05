@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}About Us - LearnHub{% endblock %}
+
+{% block content %}
+<div class="max-w-3xl mx-auto bg-white p-8 rounded border border-gray-200">
+    <h1 class="text-3xl font-bold text-gray-900 mb-4">About LearnHub</h1>
+
+    <div class="space-y-6 text-gray-700 leading-relaxed text-sm">
+        <p>
+            Welcome to <strong>LearnHub</strong>! This is a simple educational project created to demonstrate how to build web applications using Django.
+        </p>
+
+        <h2 class="text-xl font-semibold text-gray-900 pt-2">What This Project Covers</h2>
+        <ul class="list-disc list-inside space-y-1 text-gray-600">
+            <li>Creating Django views, URLs, and templates</li>
+            <li>Handling user forms and saving contact submissions</li>
+            <li>Storing data in a PostgreSQL database with Django models</li>
+            <li>Running the website with Docker and Docker Compose</li>
+            <li>Styling pages using Tailwind CSS</li>
+        </ul>
+
+        <h2 class="text-xl font-semibold text-gray-900 pt-2">How It Works</h2>
+        <p>
+            Whenever you visit a page, Django receives the request and returns an HTML template. For example, when you submit a message on the Contact page, Django validates the data and stores it in the database before redirecting you to the confirmation page.
+        </p>
+
+        <div class="pt-4">
+            <a href="{% url 'contact' %}" class="inline-block bg-blue-600 text-white font-medium px-4 py-2 rounded hover:bg-blue-700 transition">
+                Send Us a Message
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

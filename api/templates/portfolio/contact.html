@@ -1,0 +1,233 @@
+{% extends 'portfolio/base.html' %}
+{% load static %}
+
+{% block title %}Contact Phil - Freelance Web Developer{% endblock %}
+
+{% block extra_css %}
+<style>
+    .contact-container {
+        max-width: 680px;
+        margin: 0 auto 60px auto;
+    }
+
+    .contact-card {
+        background: #ffffff;
+        border: 1px solid var(--border-color, #eaeaea);
+        border-radius: 24px;
+        padding: 40px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    }
+
+    .form-group {
+        margin-bottom: 24px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-label {
+        display: block;
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--text-primary, #111111);
+        margin-bottom: 8px;
+    }
+
+    .form-label .req {
+        color: #ef4444;
+        margin-left: 2px;
+    }
+
+    .form-label .opt {
+        font-weight: 400;
+        color: var(--text-secondary, #555555);
+        font-size: 0.85rem;
+        margin-left: 4px;
+    }
+
+    .form-control {
+        width: 100%;
+        display: block;
+        box-sizing: border-box;
+        padding: 14px 18px;
+        font-size: 1rem;
+        color: var(--text-primary, #111111);
+        background-color: #fafafa;
+        border: 1px solid var(--border-color, #eaeaea);
+        border-radius: 12px;
+        outline: none;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+        font-family: inherit;
+    }
+
+    .form-control:focus {
+        background-color: #ffffff;
+        border-color: var(--accent-color, #5544ff);
+        box-shadow: 0 0 0 3px var(--accent-light, #eef1ff);
+    }
+
+    textarea.form-control {
+        resize: vertical;
+        min-height: 140px;
+        line-height: 1.6;
+    }
+
+    .form-submit-btn {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        background-color: var(--accent-color, #5544ff);
+        color: #ffffff;
+        padding: 16px 28px;
+        border-radius: 14px;
+        border: none;
+        font-size: 1.05rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+        box-shadow: 0 4px 14px rgba(85, 68, 255, 0.25);
+    }
+
+    .form-submit-btn:hover {
+        background-color: #4335df;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(85, 68, 255, 0.35);
+    }
+
+    .form-submit-btn:active {
+        transform: translateY(0);
+    }
+
+    .form-error {
+        background-color: #fef2f2;
+        border: 1px solid #fecaca;
+        color: #b91c1c;
+        padding: 16px 20px;
+        border-radius: 12px;
+        font-size: 0.9rem;
+        margin-bottom: 24px;
+    }
+
+    @media (max-width: 768px) {
+        .contact-card {
+            padding: 24px 20px;
+            border-radius: 18px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+    <!-- Hero / Intro -->
+    <section class="hero" style="margin-bottom: 40px;">
+        <div class="availability-pill">Get in Touch</div>
+        <h1>Let's start a conversation.</h1>
+        <p>Whether you have a specific project in mind, need help with frontend development or UI design, or simply want to connect, feel free to drop a message below.</p>
+    </section>
+
+    <!-- Contact Form Container -->
+    <div class="contact-container">
+        <div class="contact-card">
+            {% if form.errors %}
+                <div class="form-error">
+                    <strong>Please check the form:</strong>
+                    <ul style="margin-top: 6px; padding-left: 18px;">
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <li>{{ field.label }}: {{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                        {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
+            <form method="post" action="{% url 'portfolio_contact' %}">
+                {% csrf_token %}
+
+                <div class="form-group">
+                    <label for="id_name" class="form-label">
+                        Your Name <span class="req">*</span>
+                    </label>
+                    <input
+                        type="text"
+                        name="name"
+                        id="id_name"
+                        required
+                        value="{{ form.name.value|default:'' }}"
+                        placeholder="e.g. Jane Doe"
+                        class="form-control"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="id_email" class="form-label">
+                        Your Email <span class="req">*</span>
+                    </label>
+                    <input
+                        type="email"
+                        name="email"
+                        id="id_email"
+                        required
+                        value="{{ form.email.value|default:'' }}"
+                        placeholder="jane@example.com"
+                        class="form-control"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="id_subject" class="form-label">
+                        Subject
+                    </label>
+                    <input
+                        type="text"
+                        name="subject"
+                        id="id_subject"
+                        value="{{ form.subject.value|default:'' }}"
+                        placeholder="Project Inquiry / Collaboration"
+                        class="form-control"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="id_portfolio_url" class="form-label">
+                        Portfolio / Website Link <span class="opt">(Optional)</span>
+                    </label>
+                    <input
+                        type="url"
+                        name="portfolio_url"
+                        id="id_portfolio_url"
+                        value="{{ form.portfolio_url.value|default:'' }}"
+                        placeholder="https://yourportfolio.dev or GitHub profile"
+                        class="form-control"
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="id_message" class="form-label">
+                        Message <span class="req">*</span>
+                    </label>
+                    <textarea
+                        name="message"
+                        id="id_message"
+                        rows="5"
+                        required
+                        placeholder="Tell me about your project, timeline, or idea..."
+                        class="form-control"
+                    >{{ form.message.value|default:'' }}</textarea>
+                </div>
+
+                <button type="submit" class="form-submit-btn">
+                    <span>Send Message</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                    </svg>
+                </button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

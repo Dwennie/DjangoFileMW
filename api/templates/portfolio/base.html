@@ -1,0 +1,119 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Portfolio - Dwen-D{% endblock %}</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Static Stylesheet with Cache Busting -->
+    <link rel="stylesheet" href="{% static 'portfolio/css/style.css' %}?v={% now 'U' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header / Navigation -->
+        <header>
+            <a href="{% url 'portfolio_home' %}" class="logo">Dwen-D</a>
+            
+            <nav class="desktop-nav">
+                <a href="{% url 'portfolio_home' %}">Home</a>
+                <a href="{% url 'portfolio_work' %}">Project</a>
+                <a href="{% url 'portfolio_expertise' %}">Skills</a>
+                <a href="{% url 'portfolio_testimonials' %}">Testimonials</a>
+                <a href="{% url 'portfolio_aboutme' %}">About Me</a>
+                <a href="{% url 'portfolio_contact' %}">Contact</a>
+                <a href="{% url 'home' %}" style="margin-left: 12px; color: #3b82f6; font-weight: 600;">LearnHub &rarr;</a>
+            </nav>
+
+            <button class="menu-btn" id="menuToggle" aria-label="Menu">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="4" y1="12" x2="20" y2="12"></line>
+                    <line x1="4" y1="6" x2="20" y2="6"></line>
+                    <line x1="4" y1="18" x2="20" y2="18"></line>
+                </svg>
+            </button>
+        </header>
+
+        <!-- Mobile Navigation Menu -->
+        <nav class="mobile-nav" id="mobileNav">
+            <a href="{% url 'portfolio_home' %}">Home</a>
+            <a href="{% url 'portfolio_work' %}">Work</a>
+            <a href="{% url 'portfolio_expertise' %}">Expertise</a>
+            <a href="{% url 'portfolio_testimonials' %}">Testimonials</a>
+            <a href="{% url 'portfolio_aboutme' %}">About Me</a>
+            <a href="{% url 'portfolio_contact' %}">Contact</a>
+            <a href="{% url 'home' %}" style="color: #3b82f6;">LearnHub Platform &rarr;</a>
+        </nav>
+
+        <!-- Main Dynamic Content Block -->
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <!-- Contact & Footer Section -->
+    <div style="background-color: #151518; padding-top: 4px;">
+        <div class="container" style="padding-bottom: 32px;">
+            <!-- Contact Call-to-Action Section -->
+            <section id="contact" class="cta-box">
+                <h2>Let's build something together</h2>
+                <p>Have an exciting idea or need help scaling your design team? Drop me a message and let's connect.</p>
+                <a href="{% url 'portfolio_contact' %}" class="btn-primary">
+
+                    Send a Message
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                </a>
+            </section>
+
+            <footer>
+                <div>© {% now "Y" %} Dwen Design. All rights reserved.</div>
+                <div class="footer-links">
+                    <a href="https://twitter.com" target="_blank" rel="noopener">Twitter</a>
+                    <a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
+                    <a href="https://github.com" target="_blank" rel="noopener">GitHub</a>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Mobile Menu Toggle
+            const menuToggle = document.getElementById('menuToggle');
+            const mobileNav = document.getElementById('mobileNav');
+            if (menuToggle && mobileNav) {
+                menuToggle.addEventListener('click', function() {
+                    mobileNav.classList.toggle('open');
+                });
+            }
+
+            // Smooth scrolling for hash links
+            document.querySelectorAll('a[href*="#"]').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const hashIndex = this.href.indexOf('#');
+                    if (hashIndex !== -1) {
+                        const targetId = this.href.substring(hashIndex + 1);
+                        const targetEl = document.getElementById(targetId);
+                        if (targetEl && window.location.pathname === new URL(this.href).pathname) {
+                            e.preventDefault();
+                            targetEl.scrollIntoView({ behavior: 'smooth' });
+                            if (mobileNav) mobileNav.classList.remove('open');
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
